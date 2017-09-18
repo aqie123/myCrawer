@@ -2,6 +2,7 @@
   <dictionary name="Administrator">
     <words>
       <w>aqie</w>
+      <w>bloomfilter</w>
     </words>
   </dictionary>
 </component>
