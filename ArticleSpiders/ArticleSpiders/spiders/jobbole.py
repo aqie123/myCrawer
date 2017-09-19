@@ -1,14 +1,36 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
+from scrapy.http import Request
+from urllib import parse
 
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
     allowed_domains = ['blog.jobbole.com']
-    start_urls = ['http://blog.jobbole.com/112381/']
+    start_urls = ['http://blog.jobbole.com/all-posts/']
 
     def parse(self, response):
+        """
+        :param response:
+        :return:
+        1. 获取文章列表页中的文章url,并交给scrapy下载后进行解析
+        2. 获取下一页的url并交给scrapy下载，并交给解析函数parse进行具体字段解析
+        """
+        # 解析列表页中的所有文章url,交给scrapy下载后进行解析
+        post_urls = response.css("#archive .floated-thumb .post-thumb a::attr(href)").extract()
+
+        for post_url in post_urls:
+            yield Request(url=parse.urljoin(response.url, post_url), callback=self.css_parse_detail)
+            # print(post_url)
+
+        # 提取下一页url并交给scrapy下载
+        next_url = response.css('.next.page-numbers::attr(href)').extract_first("")
+        if next_url:
+            yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)
+
+    def xpath_parse_detail(self, response):
+        # 提取文章具体字段
         # ----------------xpath 提取页面元素---------------------------
         # extract_first() 替换为 extract_first()
         # 文章标题
@@ -49,6 +71,8 @@ class JobboleSpider(scrapy.Spider):
         tags = category_tag[1::]
         tags = ",".join(tags)
 
+
+    def css_parse_detail(self, response):
         # --------------css 选择器提取页面元素----------------------
         # 伪类选择器
         # 文章标题
@@ -87,7 +111,7 @@ class JobboleSpider(scrapy.Spider):
         # 标签
         css_tags = css_category_tag[1::]
         css_tags = ",".join(css_tags)
-        pass
+
 
 
 

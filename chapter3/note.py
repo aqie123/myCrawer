@@ -21,7 +21,7 @@
             settings.py 设置robots  False
             在 jobbole.py 断点调试
         d.  对当前页面做调试 (目录中输入命令)
-            scrapy shell http://blog.jobbole.com/112381/
+            scrapy shell http://blog.jobbole.com/all-posts/
                 1. title = response.xpath('//*[ @ id = "post-112381"]/div[1]/h1/text()')
                    获取title 值 title.extract()
                 2. 文章日期; date = response.xpath('//*[@id="post-112381"]/div[2]/p/text()')
