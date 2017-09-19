@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import re
 
 
 class JobboleSpider(scrapy.Spider):
     name = 'jobbole'
     allowed_domains = ['blog.jobbole.com']
-    start_urls = ['http://blog.jobbole.com/112381/']
+    start_urls = ['http://blog.jobbole.com/112503/']
 
     def parse(self, response):
-        # 下标从第三个开始
-        # /html/body/div[3]/div[3]/div[1]/div[1]/h1  js 生成的不算
-        # // *[ @ id = "post-112381"] / div[1] / h1
-        title = response.xpath('//*[ @ id = "post-112381"]/div[1]/h1/text()')
-        create_date = response.xpath('//*[@id="post-112381"]/div[2]/p/text()')
-        create_date = date.extract()[0].strip().replace('·','').strip()
+        # ----------------xpath 提取页面元素---------------------------
+
+        # 文章标题
+        title = response.xpath('//div[@class="entry-header"]/h1/text()').extract()
+
         pass
+
+
+
