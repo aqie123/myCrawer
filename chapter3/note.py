@@ -11,8 +11,8 @@
         a. 安装scrapy   pip install -i https://pypi.douban.com/simple scrapy
         b. 到myCrawer 新建项目名称
            workon article
-           scrapy startproject ArticleSpider
-           cd ArticleSpider
+           scrapy startproject ArticleSpiders
+           cd ArticleSpiders
            scrapy genspider jobbole blog.jobbole.com
         c. 新建main.py
             安装  pip install pypiwin32
