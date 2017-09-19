@@ -10,20 +10,20 @@ class JobboleSpider(scrapy.Spider):
 
     def parse(self, response):
         # ----------------xpath 提取页面元素---------------------------
-
+        # extract_first() 替换为 extract_first()
         # 文章标题
-        title = response.xpath('//div[@class="entry-header"]/h1/text()').extract()
+        title = response.xpath('//div[@class="entry-header"]/h1/text()').extract_first()
 
         # 创建时间
         create_date = response.xpath('//p[@class="entry-meta-hide-on-mobile"]/text()')
-        create_date = create_date.extract()[0].strip().replace('·', '').strip()
+        create_date = create_date.extract_first().strip().replace('·', '').strip()
 
         # 点赞数
         digg = response.xpath('//span[contains(@class, "vote-post-up")]/h10/text()')
-        digg = int(digg.extract()[0])
+        digg = int(digg.extract_first())
 
         # 收藏数
-        fav_nums = response.xpath("//span[contains(@class, 'bookmark-btn')]/text()").extract()[0]
+        fav_nums = response.xpath("//span[contains(@class, 'bookmark-btn')]/text()").extract_first()
         match_re = re.match(".*?(\d+).*", fav_nums)
         if match_re:
             fav_nums = match_re.group(1)
@@ -31,7 +31,7 @@ class JobboleSpider(scrapy.Spider):
             fav_nums = 0
 
         # 评论数
-        comment_nums = response.xpath("//a[@href='#article-comment']/span/text()").extract()[0]
+        comment_nums = response.xpath("//a[@href='#article-comment']/span/text()").extract_first()
         match_re = re.match(".*?(\d+).*", comment_nums)
         if match_re:
             comment_nums = match_re.group(1)
@@ -39,7 +39,7 @@ class JobboleSpider(scrapy.Spider):
             comment_nums = 0
 
         # 获取文章内容
-        main_contents = response.xpath("//div[@class='entry']").extract()[0]
+        main_contents = response.xpath("//div[@class='entry']").extract_first()
 
         # 获取分类标签
         category_tag = response.xpath('//p[@class="entry-meta-hide-on-mobile"]/a/text()').extract()
@@ -52,17 +52,17 @@ class JobboleSpider(scrapy.Spider):
         # --------------css 选择器提取页面元素----------------------
         # 伪类选择器
         # 文章标题
-        css_title = response.css('.entry-header h1::text').extract()[0]
+        css_title = response.css('.entry-header h1::text').extract_first()
 
         # 创建时间
         css_create_time = response.css('p.entry-meta-hide-on-mobile::text')
-        css_create_time = css_create_time.extract()[0].strip().replace('·', '').strip()
+        css_create_time = css_create_time.extract_first().strip().replace('·', '').strip()
 
         # 点赞数
-        css_like = response.css('span.vote-post-up h10::text').extract()[0]
+        css_like = response.css('span.vote-post-up h10::text').extract_first()
 
         # 收藏数
-        css_fav_nums = response.css('.bookmark-btn::text').extract()[0]
+        css_fav_nums = response.css('.bookmark-btn::text').extract_first()
         match_re = re.match(".*?(\d+).*", css_fav_nums)
         if match_re:
             css_fav_nums = match_re.group(1)
@@ -70,13 +70,13 @@ class JobboleSpider(scrapy.Spider):
             css_fav_nums = 0
 
         # 评论数
-        css_comment_nums = response.css("a[href='#article-comment'] span::text").extract()[0]
+        css_comment_nums = response.css("a[href='#article-comment'] span::text").extract_first()
         match_re = re.match(".*?(\d+).*", css_comment_nums)
         if match_re:
             css_comment_nums = match_re.group(1)
 
         # 正文
-        css_content = response.css("div.entry").extract()[0]
+        css_content = response.css("div.entry").extract_first()
 
         # 文章分类
         css_category_tag = response.css("p.entry-meta-hide-on-mobile a::text").extract()
