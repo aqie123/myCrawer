@@ -14,6 +14,7 @@ class ArticlespidersItem(scrapy.Item):
     # name = scrapy.Field()
     pass
 
+
 """
 class JobBoleArticleItem(scrapy.Item):
     # 只有一个类型field
