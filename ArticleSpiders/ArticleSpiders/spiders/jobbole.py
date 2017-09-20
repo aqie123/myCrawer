@@ -8,7 +8,7 @@ from scrapy.loader import ItemLoader
 
 
 from ArticleSpiders.items import JobBoleArticleItem, ArticleItemLoader
-# from ArticleSpiders.utils.common import get_md5
+from ArticleSpiders.utils.common import get_md5
 '''
 
 from selenium import webdriver
@@ -128,14 +128,15 @@ class JobboleSpider(scrapy.Spider):
         css_tags = css_category_tag[1::]
         css_tags = ",".join(css_tags)
 
-        # article_item["url_object_id"] = get_md5(response.url)
-        article_item["url_object_id"] = response.url
+        article_item["url_object_id"] = get_md5(response.url)
         article_item["title"] = css_title
         article_item["url"] = response.url
+        '''
         try:
             css_create_time = datetime.datetime.strptime(css_create_time, "%Y/%m/%d").date()
         except Exception as e:
             css_create_time = datetime.datetime.now().date()
+        '''
         article_item["create_date"] = css_create_time
         article_item["front_image_url"] = [front_image_url]
         article_item["praise_nums"] = praise_nums

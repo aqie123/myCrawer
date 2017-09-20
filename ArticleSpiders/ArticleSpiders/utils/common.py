@@ -6,6 +6,7 @@ import re
 
 
 def get_md5(url):
+    # str 就是unicode
     if isinstance(url, str):
         url = url.encode("utf-8")
     m = hashlib.md5()
@@ -25,4 +26,4 @@ def extract_num(text):
 
 
 if __name__ == "__main__":
-    print (get_md5("http://jobbole.com".encode("utf-8")))
+    print(get_md5("http://jobbole.com".encode("utf-8")))

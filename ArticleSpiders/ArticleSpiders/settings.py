@@ -65,7 +65,8 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'ArticleSpiders.pipelines.ArticlespidersPipeline': 300,
+   # 'ArticleSpiders.pipelines.ArticlespidersPipeline': 300,
+   'ArticleSpiders.pipelines.JsonWithEncodingPipeline': 2,
     # scrapy默认的
     # 'scrapy.pipelines.images.ImagesPipeline': 1,
     # 自己设置图片下载路径
