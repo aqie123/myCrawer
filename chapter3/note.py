@@ -31,7 +31,9 @@
         f.xpath 和css 选择器拿到数据,调试main.py
         g.在items新建两个类 JobBoleArticleItem,
         h.settings.py   修改 ITEM_PIPELINES
+            同时可以过滤下载图片
         i. workon article  安装 pip install pillow 下载图片
+        j,在pipelines  ArticleImagePipeline
 
     3.xpath
         a.使用路径表达式在xml和html中进行导航
