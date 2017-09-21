@@ -65,12 +65,19 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   # 'ArticleSpiders.pipelines.ArticlespidersPipeline': 300,
-   'ArticleSpiders.pipelines.JsonWithEncodingPipeline': 2,
+    # 'ArticleSpiders.pipelines.ArticlespidersPipeline': 300,
+    #  自定义将爬取内容存入article.json
+    # 'ArticleSpiders.pipelines.JsonWithEncodingPipeline': 6,
+    #  使用scrapy自带转json格式,将爬取内容存进json
+    # 'ArticleSpiders.pipelines.JsonExporterPipeline': 5,
     # scrapy默认的
-    # 'scrapy.pipelines.images.ImagesPipeline': 1,
+    'scrapy.pipelines.images.ImagesPipeline': 4,
     # 自己设置图片下载路径
-    'ArticleSpiders.pipelines.ArticleImagePipeline': 1
+    # 'ArticleSpiders.pipelines.ArticleImagePipeline': 3,
+    # 同步插入 保存到数据库
+    # 'ArticleSpiders.pipelines.MysqlPipeline': 2,
+    # 异步方式写入数据库
+    # 'ArticleSpiders.pipelines.MysqlTwistedPipeline': 1,
 }
 # 配置下载图片字段
 IMAGES_URLS_FIELD = "front_image_url"
@@ -102,3 +109,13 @@ IMAGES_STORE = os.path.join(project_dir, 'images')
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# mysql配置项
+MYSQL_HOST = "127.0.0.1"
+MYSQL_DBNAME = "article_spider"
+MYSQL_USER = "root"
+MYSQL_PASSWORD = "root"
+
+
+SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+SQL_DATE_FORMAT = "%Y-%m-%d"

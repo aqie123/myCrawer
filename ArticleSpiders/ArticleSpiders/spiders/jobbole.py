@@ -9,12 +9,12 @@ from scrapy.loader import ItemLoader
 
 from ArticleSpiders.items import JobBoleArticleItem, ArticleItemLoader
 from ArticleSpiders.utils.common import get_md5
-'''
 
+"""
 from selenium import webdriver
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy import signals
-'''
+"""
 
 
 class JobboleSpider(scrapy.Spider):
@@ -29,7 +29,8 @@ class JobboleSpider(scrapy.Spider):
         1. 获取文章列表页中的文章url,并交给scrapy下载后进行解析
         2. 获取下一页的url并交给scrapy下载，并交给解析函数parse进行具体字段解析
         """
-        # 解析列表页中的所有文章url,交给scrapy下载后进行解析
+        # 解析列表页中的所有文章url并交给scrapy下载后并进行解析
+
         post_nodes = response.css("#archive .floated-thumb .post-thumb a")
         for post_node in post_nodes:
             image_url = post_node.css("img::attr(src)").extract_first("")
@@ -41,7 +42,6 @@ class JobboleSpider(scrapy.Spider):
         next_url = response.css(".next.page-numbers::attr(href)").extract_first("")
         if next_url:
             yield Request(url=parse.urljoin(response.url, post_url), callback=self.parse)
-            # print(post_url)
 
     def xpath_parse_detail(self, response):
         # 提取文章具体字段
@@ -100,12 +100,13 @@ class JobboleSpider(scrapy.Spider):
 
         # 点赞数
         praise_nums = response.css('span.vote-post-up h10::text').extract_first()
+        praise_nums = int(praise_nums)
 
         # 收藏数
         fav_nums = response.css('.bookmark-btn::text').extract_first()
         match_re = re.match(".*?(\d+).*", fav_nums)
         if match_re:
-            fav_nums = match_re.group(1)
+            fav_nums = int(match_re.group(1))
         else:
             fav_nums = 0
 
@@ -113,7 +114,9 @@ class JobboleSpider(scrapy.Spider):
         comment_nums = response.css("a[href='#article-comment'] span::text").extract_first()
         match_re = re.match(".*?(\d+).*", comment_nums)
         if match_re:
-            comment_nums = match_re.group(1)
+            comment_nums = int(match_re.group(1))
+        else:
+            comment_nums = 0
 
         # 正文
         content = response.css("div.entry").extract_first()
@@ -131,12 +134,12 @@ class JobboleSpider(scrapy.Spider):
         article_item["url_object_id"] = get_md5(response.url)
         article_item["title"] = css_title
         article_item["url"] = response.url
-        '''
+
         try:
             css_create_time = datetime.datetime.strptime(css_create_time, "%Y/%m/%d").date()
         except Exception as e:
             css_create_time = datetime.datetime.now().date()
-        '''
+
         article_item["create_date"] = css_create_time
         article_item["front_image_url"] = [front_image_url]
         article_item["praise_nums"] = praise_nums
@@ -149,9 +152,9 @@ class JobboleSpider(scrapy.Spider):
 
     def parse_detail(self, response):
         article_item = JobBoleArticleItem()
-        #通过item loader加载item
+        # 通过item loader加载item
         front_image_url = response.meta.get("front_image_url", "")  # 文章封面图
-        item_loader = ArticleItemLoader(item=JobBoleArticleItem(), response=response)
+        item_loader = ArticleItemLoader(item=article_item, response=response)
         item_loader.add_css("title", ".entry-header h1::text")
         item_loader.add_value("url", response.url)
         item_loader.add_value("url_object_id", get_md5(response.url))
@@ -163,6 +166,7 @@ class JobboleSpider(scrapy.Spider):
         item_loader.add_css("tags", "p.entry-meta-hide-on-mobile a::text")
         item_loader.add_css("content", "div.entry")
 
+        # 将上面规则解析
         article_item = item_loader.load_item()
         yield article_item
 

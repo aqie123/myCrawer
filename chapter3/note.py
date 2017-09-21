@@ -34,8 +34,21 @@
             同时可以过滤下载图片
         i. workon article  安装 pip install pillow 下载图片
         j,在pipelines  ArticleImagePipeline  自定义图片下载路径
-        k.通过pipeline将数据保存到数据库中
-        l.新建 JsonWithEncodingPipeline 将数据保存到
+        k.新建 JsonWithEncodingPipeline 将数据保存到 article.json
+        l.JsonExporterPipleline 调用scrapy自带保存进articleexport.json
+        m.通过pipeline将数据保存到数据库中 (同步 MysqlPipeline)
+            1. 新建jobbole.sql
+            2. 存数据库时转换为date类型,(保存进json会出问题)
+            3. 安装mysql驱动 pip install mysqlclient
+               (linux下面：
+               乌班图： sudo apt-get install libmysqlclient-dev
+               centos: sudo yum install python-devel mysql-devel)
+            4.自定义MysqlPipeline 存入数据库
+        n.通过异步方式写入数据库 (MysqlTwistedPipeline)
+            1. settings.py 配置 mysql相关参数
+        o.item-loader
+            1.
+
 
     3.xpath
         a.使用路径表达式在xml和html中进行导航
