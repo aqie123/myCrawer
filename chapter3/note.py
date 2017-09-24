@@ -82,5 +82,36 @@
             17.article/div/p|//span  选取所有属于article元素的div元素的p元素
                                     以及文档中所有的span元素
 
+二：爬取知乎问答：
+    1. session(根据用户名密码生成session_id)
+    2. cookie(本地存储机制)
+        a.键值对
+        b.浏览器 (请求)-> 服务器(生成session_id,返回浏览器将id存进cookie,下一次请求带着cookie)
+    3.通过request完成知乎模拟登陆
+        a.Request URL:
+            https://www.zhihu.com/login/email
+            https://www.zhihu.com/login/phone_num
+        b.Form Data
+            1._xsrf
+            2.password
+            3.email
+            4.captcha_type
+        c.utils/zhihu_login_requests.py
+            1. pip install requests
+        d.请求头信息
+            1.User-Agent
+            2.header
+    4. 进入ArticleSpider,进入article, 新建工程目录 scrapy genspider zhihu www.zhihu.com
+        1.知乎页面分两版：https://www.zhihu.com/question/65528115/answer/234283280
+            Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0
+        2.查看旧版样式 ：scrapy shell -s USER_AGENT="Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0" https://www.zhihu.com/question/65528115/answer/234283280
+        3.with open("e:/zhihu.html","wb") as f:
+            f.write(response.text.encode("utf-8"))
 
 """
+"""
+https://www.zhihu.com/api/v4/questions/29372574/answers?sort_by=default&include=data%5B%2A%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B%2A%5D.mark_infos%5B%2A%5D.url%3Bdata%5B%2A%5D.author.follower_count%2Cbadge%5B%3F%28type%3Dbest_answerer%29%5D.topics&limit=20&offset=23
+
+"""
+print("\u767b\u5f55\u8fc7\u4e8e\u9891\u7e41\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5")
+print("\u9a8c\u8bc1\u7801\u4f1a\u8bdd\u65e0\u6548")

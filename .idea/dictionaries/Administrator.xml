@@ -3,8 +3,12 @@
     <words>
       <w>aqie</w>
       <w>bloomfilter</w>
+      <w>genspider</w>
       <w>itemloader</w>
       <w>jobbole</w>
+      <w>referer</w>
+      <w>xsrf</w>
+      <w>zhihu</w>
     </words>
   </dictionary>
 </component>
